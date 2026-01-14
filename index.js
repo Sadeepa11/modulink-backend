@@ -13,6 +13,10 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // Routes
+app.get('/', (req, res) => {
+    res.send('Backend is running');
+});
+
 app.use('/', authRoutes);
 app.use('/chats', require('./routes/chatRoutes'));
 app.use('/users', require('./routes/userRoutes'));
