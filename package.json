@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "test api"
+    "test": "test api",
+    "start": "node index.js"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -22,6 +23,8 @@
     "prisma": "^5.22.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "netlify-cli": "^23.13.3",
+    "nodemon": "^3.1.11",
+    "serverless-http": "^4.0.0"
   }
 }

@@ -5,7 +5,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -18,6 +18,10 @@ app.use('/chats', require('./routes/chatRoutes'));
 app.use('/users', require('./routes/userRoutes'));
 app.use('/groups', require('./routes/groupRoutes'));
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
+
+module.exports = app;
