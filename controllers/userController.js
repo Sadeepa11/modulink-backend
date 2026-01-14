@@ -75,7 +75,7 @@ const updateProfile = async (req, res) => {
         };
 
         if (req.file) {
-            updateData.profilePic = req.file.filename;
+            updateData.profilePic = req.file.path;
         }
 
         const updatedUser = await prisma.user.update({
