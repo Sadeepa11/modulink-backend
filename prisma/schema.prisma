@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
+  email       String   @unique
+  password    String
+  gender      String?
+  profilePic  String?
+  bio         String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chats       Chat[]   @relation("UserChats")
+  messages    Message[]
+  groupMembers GroupMember[]
+  groupMessages GroupMessage[]
+}
+
+model Chat {
+  id        Int       @id @default(autoincrement())
+  users     User[]    @relation("UserChats")
+  messages  Message[]
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String?  // Optional because might be image only
+  senderId  Int
+  sender    User     @relation(fields: [senderId], references: [id])
+  chatId    Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  status    String   @default("SENT") // SENT, DELIVERED, READ
+  type      String   @default("TEXT") // TEXT, IMAGE, VIDEO, AUDIO
+  mediaUrl  String?
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Group {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  icon        String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  members     GroupMember[]
+  messages    GroupMessage[]
+}
+
+model GroupMember {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  groupId   Int
+  group     Group    @relation(fields: [groupId], references: [id])
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  joinedAt  DateTime @default(now())
+
+  @@unique([userId, groupId])
+}
+
+model GroupMessage {
+  id        Int      @id @default(autoincrement())
+  content   String?
+  senderId  Int
+  sender    User     @relation(fields: [senderId], references: [id])
+  groupId   Int
+  group     Group    @relation(fields: [groupId], references: [id])
+  status    String   @default("SENT")
+  type      String   @default("TEXT")
+  mediaUrl  String?
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
