@@ -21,6 +21,8 @@ model User {
   website     String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  isOnline    Boolean  @default(false)
+  lastSeen    DateTime?
   chats       Chat[]   @relation("UserChats")
   messages    Message[]
   groupMembers GroupMember[]

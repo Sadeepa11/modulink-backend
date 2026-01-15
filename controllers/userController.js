@@ -47,7 +47,9 @@ const getCurrentUser = async (req, res) => {
                 profilePic: true,
                 email: true,
                 bio: true,
-                website: true
+                website: true,
+                isOnline: true,
+                lastSeen: true
             }
         });
 
@@ -59,6 +61,31 @@ const getCurrentUser = async (req, res) => {
     } catch (error) {
         console.error('Error fetching current user:', error);
         res.status(500).json({ error: 'Failed to fetch current user' });
+    }
+};
+
+const getUserById = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                username: true,
+                profilePic: true,
+                isOnline: true,
+                lastSeen: true
+            }
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Failed to fetch user' });
     }
 };
 
@@ -123,5 +150,6 @@ module.exports = {
     getUsers,
     getCurrentUser,
     updateProfile,
-    deleteAccount
+    deleteAccount,
+    getUserById
 };

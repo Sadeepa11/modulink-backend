@@ -7,6 +7,7 @@ const upload = require('../middleware/upload'); // Use Cloudinary middleware
 
 router.get('/', authenticateToken, userController.getUsers);
 router.get('/me', authenticateToken, userController.getCurrentUser);
+router.get('/:id', authenticateToken, userController.getUserById);
 router.put('/me', authenticateToken, upload.single('profilePic'), userController.updateProfile); // Consistent with frontend
 router.delete('/me', authenticateToken, userController.deleteAccount); // Also consistent with frontend delete call
 
