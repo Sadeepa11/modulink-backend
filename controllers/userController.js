@@ -74,7 +74,8 @@ const getUserById = async (req, res) => {
                 username: true,
                 profilePic: true,
                 isOnline: true,
-                lastSeen: true
+                lastSeen: true,
+                bio: true
             }
         });
 
