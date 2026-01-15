@@ -24,6 +24,9 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Silence favicon requests
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Socket.io Logic
 io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
